@@ -20,3 +20,4 @@ I spent only a few hours hacking this together.  YMMV
 `-t` or `--threads` - The number of concurrent threads used during enumeration (default: 3)
 `-o` or `--outdir` - The location where downloaded files will be stored (default: .)
 `--timeout` - The number of seconds to wait for a transfer timeout (default: 60)
+`--verbose` - Show verbose output (default: False)

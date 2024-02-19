@@ -76,6 +76,7 @@ class ResumableList:
             self.__end = end
             self.__found = 0
             self.__missed = 0
+            self.__error = 0
 
 
         def add_found(self):
@@ -89,6 +90,12 @@ class ResumableList:
         
         def missed(self):
             return self.__missed
+
+        def add_error(self):
+            self.__error = self.__error + 1
+        
+        def error(self):
+            return self.__error
 
         def __iter__(self):
             return iter(self.__items)

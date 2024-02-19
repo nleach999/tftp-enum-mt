@@ -17,6 +17,7 @@ parser.add_argument('-c', '--chunk', action='store', default=1024, help="The num
 parser.add_argument('-t', '--threads', action='store', default=3, help="The number of concurrent threads (default: 3)", dest='threads', type=int)
 parser.add_argument('-o', '--outdir', action='store', default='.', help="Directory where downloaded files will be stored (default: .)", dest='outdir')
 parser.add_argument('--timeout', action='store', default=60, type=int, help="Transfer timeout, in seconds (default: 60)", dest='timeout')
+parser.add_argument('--verbose', action='store_true', default=False, type=int, help="Show verbose output (default: False)", dest='verbose')
 
 
 args = None
@@ -62,9 +63,13 @@ class ChunkThread:
                     chunk.add_missed()
 
             except Exception as ex:
+                chunk.add_error()
+                st = ""
+
+                if args.verbose:
+                    st = f" Stack Trace: [{traceback.format_exception(ex)}]"
                 self.__sender.send( (chunk,  
-                  f"Exception: [{type(ex)}] File Name: [{fname}] Msg: [{str(ex)}] Stack Trace: [{traceback.format_exception(ex)}]"))
-                return
+                  f"Exception: [{type(ex)}] File Name: [{fname}] Msg: [{str(ex)}]{st}"))
 
         self.__queue.put(chunk)
 
@@ -73,7 +78,7 @@ class ChunkThread:
             try:
                 val = self.__queue.get(timeout=1)
                 self.__processed_bytes = self.__processed_bytes + (val.end() - val.offset())
-                print(f"Chunk complete: Found: {val.found()} Missed: {val.missed()} Approx. {self.__processed_bytes / thelist.file_end_pos():.2%} complete.")
+                print(f"Chunk complete: Found: {val.found()} Missed: {val.missed()} Error: {val.error()} Approx. {self.__processed_bytes / thelist.file_end_pos():.2%} complete.")
                 thelist.confirm_chunk(val)
             except:
                 if self.__receiver.poll(1):
