@@ -85,6 +85,8 @@ class ChunkThread:
                     bad_chunk, exception  = self.__receiver.recv()
                     print(f"Error processing chunk covering file range {bad_chunk.offset()} to {bad_chunk.end()}")
                     print(f"Error: {exception}")
+                    # Return, which means entire chunk will be unconfirmed
+                    return
         
 thread = ChunkThread()
 
