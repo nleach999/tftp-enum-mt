@@ -17,7 +17,7 @@ parser.add_argument('-c', '--chunk', action='store', default=1024, help="The num
 parser.add_argument('-t', '--threads', action='store', default=3, help="The number of concurrent threads (default: 3)", dest='threads', type=int)
 parser.add_argument('-o', '--outdir', action='store', default='.', help="Directory where downloaded files will be stored (default: .)", dest='outdir')
 parser.add_argument('--timeout', action='store', default=60, type=int, help="Transfer timeout, in seconds (default: 60)", dest='timeout')
-parser.add_argument('--verbose', action='store_true', default=False, type=int, help="Show verbose output (default: False)", dest='verbose')
+parser.add_argument('--verbose', action='store_true', default=False, help="Show verbose output (default: False)", dest='verbose')
 
 
 args = None
